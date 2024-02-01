@@ -5,13 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:id="@+id/Maincontainer">
 
     <include layout="@layout/content_main" />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
 
         android:id="@+id/navbar"
         android:layout_width="match_parent"
@@ -33,17 +31,18 @@
             android:text="Calendar" />
 
         <Button
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            app:cornerRadius="0dp"
-
+            android:id="@+id/classes_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/material_motion_duration_short_1"
+            android:insetLeft="0dp"
+
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:text="Classes"
             android:textSize="16dp"
-            android:text="Classes" />
+            app:cornerRadius="0dp" />
 
         <Button
             android:insetTop="0dp"

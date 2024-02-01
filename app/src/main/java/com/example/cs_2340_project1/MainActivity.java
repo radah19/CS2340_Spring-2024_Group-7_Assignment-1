@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,9 +18,11 @@ import com.example.cs_2340_project1.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button classes_btn;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -29,6 +32,18 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Creating onclick for the classes button to travel to classes fragment
+        classes_btn = findViewById(R.id.classes_button);
+        classes_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.Maincontainer, new ClassesFragment()).commit();
+            }
+        });
+
+
 
 //        setSupportActionBar(binding.toolbar);
 
