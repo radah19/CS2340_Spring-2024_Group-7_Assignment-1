@@ -1,24 +1,21 @@
 package com.example.cs_2340_project1;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHolder> {
+public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHolderTues> {
 
     ArrayList<ClassesModel> classesBundle;
     ArrayList<ClassesModel> classesDay;
@@ -30,14 +27,14 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolderTues onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.one_line_class,parent,false);
-        MyViewHolder holder = new MyViewHolder(view);
+        MyViewHolderTues holder = new MyViewHolderTues(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderTues holder, int position) {
         holder.className.setText(classesDay.get(position).getCourseName());
         holder.section.setText(classesDay.get(position).getSection());
         holder.professor.setText(classesDay.get(position).getProfessor());
@@ -47,7 +44,6 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AddClass addClass = new AddClass();
                 /*
                 Bundle bundle = new Bundle();
@@ -58,9 +54,12 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("send", classesBundle);
                 bundle2.putSerializable("position", holder.getAbsoluteAdapterPosition());
+                bundle2.putSerializable("day", classesDay);
+                Toast.makeText(v.getContext(), String.valueOf(holder.getAbsoluteAdapterPosition()), Toast.LENGTH_SHORT).show();
                 addClass.setArguments(bundle2);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_main, addClass).commit();
+
             }
         });
     }
@@ -70,7 +69,7 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
         return classesDay.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolderTues extends RecyclerView.ViewHolder {
         TextView className;
         TextView section;
         TextView professor;
@@ -78,8 +77,9 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
         TextView repeat;
         TextView location;
         ConstraintLayout parentLayout;
+        Button edit_btn;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolderTues(@NonNull View itemView) {
             super(itemView);
             className = itemView.findViewById(R.id.cl_class);
             section = itemView.findViewById(R.id.cl_section);

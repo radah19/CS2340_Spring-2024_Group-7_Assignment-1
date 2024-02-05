@@ -1,7 +1,5 @@
 package com.example.cs_2340_project1;
 
-import static com.example.cs_2340_project1.GlobalControllerService.classModels;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -55,6 +53,9 @@ public class AddClass extends Fragment implements Serializable {
     // Creating ArrayList for data
     ArrayList<ClassesModel> classesModel = new ArrayList<>();
 
+    ArrayList<ClassesModel> classesDays = new ArrayList<>();
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,20 +90,13 @@ public class AddClass extends Fragment implements Serializable {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TESTING!!!!
-        /*
-        Bundle recievedBundle2 = getArguments();
-        if (recievedBundle2 != null) {
-           Toast.makeText(getActivity(), String.valueOf(recievedBundle2.getSerializable("position")), Toast.LENGTH_SHORT).show();
-        }
-         */
         days = getResources().getStringArray(R.array.daysOfWeek);
         checkedItems =  new boolean[days.length];
         Bundle recievedBundle = getArguments();
         id = recievedBundle.getInt("position", -1);
         if (recievedBundle != null) {
             classesModel = (ArrayList<ClassesModel>) recievedBundle.getSerializable("send");
-            Toast.makeText(getActivity(), String.valueOf(classesModel.size()), Toast.LENGTH_SHORT).show();
+            classesDays = (ArrayList<ClassesModel>) recievedBundle.getSerializable("day");
         }
         // whether edit or blank form
 
@@ -133,13 +127,13 @@ public class AddClass extends Fragment implements Serializable {
         Bundle recievedBundle = getArguments();
         id = recievedBundle.getInt("position", -1);
         if (id >= 0) {
-          // Setting the edit field
-            courseInput.setText(classModels.get(id).getCourseName());
-            timeInput.setText(classModels.get(id).getDateAndtime());
-            dateInput.setText(classModels.get(id).getRepeat());
-            professorInput.setText(classModels.get(id).getProfessor());
-            sectionInput.setText(classModels.get(id).getSection());
-            locationInput.setText(classModels.get(id).getLocation());
+            // Setting the edit field
+            courseInput.setText(classesDays.get(id).getCourseName());
+            timeInput.setText(classesDays.get(id).getDateAndtime());
+            dateInput.setText(classesDays.get(id).getRepeat());
+            professorInput.setText(classesDays.get(id).getProfessor());
+            sectionInput.setText(classesDays.get(id).getSection());
+            locationInput.setText(classesDays.get(id).getLocation());
         } // if
 
 
@@ -148,7 +142,7 @@ public class AddClass extends Fragment implements Serializable {
             public void onClick(View v) {
 
                 //cancelButtonPressed();
-                
+
                 ClassesFragment classFragment = new ClassesFragment();
                 Bundle bundle =  new Bundle();
                 bundle.putSerializable("userClasses", classesModel);
@@ -168,12 +162,12 @@ public class AddClass extends Fragment implements Serializable {
                     alertDialog.setMessage("Are you sure you want to edit this class?").setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            classModels.get(id).setCourseName(courseInput.getText().toString());
-                            classModels.get(id).setDateAndtime(timeInput.getText().toString());
-                            classModels.get(id).setRepeat(dateInput.getText().toString());
-                            classModels.get(id).setSection(sectionInput.getText().toString());
-                            classModels.get(id).setLocation(locationInput.getText().toString());
-                            classModels.get(id).setProfessor(professorInput.getText().toString());
+                            classesModel.get(id).setCourseName(courseInput.getText().toString());
+                            classesModel.get(id).setDateAndtime(timeInput.getText().toString());
+                            classesModel.get(id).setRepeat(dateInput.getText().toString());
+                            classesModel.get(id).setSection(sectionInput.getText().toString());
+                            classesModel.get(id).setLocation(locationInput.getText().toString());
+                            classesModel.get(id).setProfessor(professorInput.getText().toString());
                             // editing
                             ClassesFragment classFragment = new ClassesFragment();
                             Bundle bundle = new Bundle();
@@ -213,7 +207,7 @@ public class AddClass extends Fragment implements Serializable {
                     professor = professorInput.getText().toString();
                     section = sectionInput.getText().toString();
                     location = locationInput.getText().toString();
-                    classModels.add(new ClassesModel(location, section, professor, course, time, date));
+                    classesModel.add(new ClassesModel(location, section, professor, course, time, date));
                     // Creating bundle for data transfer
                     ClassesFragment classFragment = new ClassesFragment();
                     Bundle bundle = new Bundle();
@@ -241,22 +235,22 @@ public class AddClass extends Fragment implements Serializable {
                         fragmentTransaction.replace(R.id.content_main, classFragment).commit();
                     }
                 }) .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClassesFragment classFragment = new ClassesFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("userClasses", classesModel);
-                                classFragment.setArguments(bundle);
-                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.content_main, classFragment).commit();
-                            }
-                        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ClassesFragment classFragment = new ClassesFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("userClasses", classesModel);
+                        classFragment.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.content_main, classFragment).commit();
+                    }
+                });
                 AlertDialog mDialog = alertDialog.create();
                 mDialog.show();
             }
         });
 
-       timeInput = view.findViewById(R.id.class_time);
+        timeInput = view.findViewById(R.id.class_time);
         timeInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,9 +270,9 @@ public class AddClass extends Fragment implements Serializable {
 
     public void popTimePicker(View view){
         TimePickerDialog.OnTimeSetListener onTimeSetListener = (view1, selectedHour, selectedMinute) -> {
-        hour = selectedHour;
-        minute = selectedMinute;
-        timeInput.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
+            hour = selectedHour;
+            minute = selectedMinute;
+            timeInput.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
         };
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), onTimeSetListener, hour, minute, true);
         timePickerDialog.show();

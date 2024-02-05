@@ -1,7 +1,5 @@
 package com.example.cs_2340_project1;
 
-import static com.example.cs_2340_project1.GlobalControllerService.classModels;
-
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +18,6 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReferenceArray;
-import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +27,8 @@ import java.util.stream.Collectors;
 public class ClassesFragment extends Fragment implements Serializable {
 
     // Add button
-   Button add_btn;
+
+    Button add_btn;
 
     // Creating ArrayList for bundle data
     ArrayList<ClassesModel> classesBundle = new ArrayList<>();
@@ -49,6 +47,7 @@ public class ClassesFragment extends Fragment implements Serializable {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -83,20 +82,23 @@ public class ClassesFragment extends Fragment implements Serializable {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        for (ClassesModel i: classModels) {
-            if (i.getRepeat().contains("Monday")) {
-                classesMon.add(i);
-            } if (i.getRepeat().contains("Tuesday")) {
-                classesTues.add(i);
-            } if (i.getRepeat().contains("Wednesday")) {
-                classesWed.add(i);
-            } if (i.getRepeat().contains("Thursday")) {
-                classesThur.add(i);
-            } if (i.getRepeat().contains("Friday")) {
-                classesFri.add(i);
-            }// if
-        } // for
+        Bundle sentBundle = getArguments();
+        if (sentBundle != null) {
+            classesBundle = (ArrayList<ClassesModel>) sentBundle.getSerializable("userClasses");
+            for (ClassesModel i: classesBundle) {
+                if (i.getRepeat().contains("Monday")) {
+                    classesMon.add(i);
+                } if (i.getRepeat().contains("Tuesday")) {
+                    classesTues.add(i);
+                } if (i.getRepeat().contains("Wednesday")) {
+                    classesWed.add(i);
+                } if (i.getRepeat().contains("Thursday")) {
+                    classesThur.add(i);
+                } if (i.getRepeat().contains("Friday")) {
+                    classesFri.add(i);
+                }// if
+            } // for
+        } // if
 
         // Grabbing sent over bundle
 
@@ -113,31 +115,40 @@ public class ClassesFragment extends Fragment implements Serializable {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_classes, container, false);
+
+
+
         // For the recycler view
 
         recyclerViewMon = view.findViewById(R.id.monday);
         RecycleViewAdapter adapter = new RecycleViewAdapter(classesMon, classesBundle);
-        recyclerViewMon.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewMon.setLayoutManager(mLayoutManager);
         recyclerViewMon.setAdapter(adapter);
 
         recyclerViewTues = view.findViewById(R.id.tuesday);
-        RecycleViewAdapter adapterTues = new RecycleViewAdapter(classesTues, classesBundle);
-        recyclerViewTues.setLayoutManager(new LinearLayoutManager(getContext()));
+        TuesdayAdapter adapterTues = new TuesdayAdapter(classesTues, classesBundle);
+        RecyclerView.LayoutManager tLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewTues.setLayoutManager(tLayoutManager);
         recyclerViewTues.setAdapter(adapterTues);
 
         recyclerViewWed = view.findViewById(R.id.wednesday);
-        RecycleViewAdapter adapterWed = new RecycleViewAdapter(classesWed, classesBundle);
-        recyclerViewWed.setLayoutManager(new LinearLayoutManager(getContext()));
+        WednesdayAdapter adapterWed = new WednesdayAdapter(classesWed, classesBundle);
+        RecyclerView.LayoutManager wLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewWed.setLayoutManager(wLayoutManager);
         recyclerViewWed.setAdapter(adapterWed);
 
+
         recyclerViewThurs = view.findViewById(R.id.thursday);
-        RecycleViewAdapter adapterThurs = new RecycleViewAdapter(classesThur, classesBundle);
-        recyclerViewThurs.setLayoutManager(new LinearLayoutManager(getContext()));
+        ThursdayAdapter adapterThurs = new ThursdayAdapter(classesThur, classesBundle);
+        RecyclerView.LayoutManager rLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewThurs.setLayoutManager(rLayoutManager);
         recyclerViewThurs.setAdapter(adapterThurs);
 
         recyclerViewFri = view.findViewById(R.id.friday);
-        RecycleViewAdapter adapterFri = new RecycleViewAdapter(classesFri, classesBundle);
-        recyclerViewFri.setLayoutManager(new LinearLayoutManager(getContext()));
+        FridayAdapter adapterFri = new FridayAdapter(classesFri, classesBundle);
+        RecyclerView.LayoutManager fLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewFri.setLayoutManager(fLayoutManager);
         recyclerViewFri.setAdapter(adapterFri);
 
         add_btn = view.findViewById(R.id.add_class);
@@ -151,21 +162,10 @@ public class ClassesFragment extends Fragment implements Serializable {
                 addFragment.setArguments(bundle2);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_main, addFragment).commit();
+
+
             }
         });
         return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        classModels.clear();
-        classModels.addAll(classesMon);
-        classModels.addAll(classesTues);
-        classModels.addAll(classesWed);
-        classModels.addAll(classesThur);
-        classModels.addAll(classesFri);
-
-        classModels = (ArrayList) classModels.stream().distinct().collect(Collectors.toList());
-        super.onDestroy();
     }
 }
