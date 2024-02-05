@@ -41,32 +41,27 @@ public class MainActivity extends AppCompatActivity {
         // Creating onclick for the classes button to travel to classes fragment
         classes_btn = findViewById(R.id.classes_button);
         classes_btn.setOnClickListener(v -> {
-            ClassesFragment f = new ClassesFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_main, f, "action_nav_classList")
-                    .addToBackStack(null)
-                    .commit();
+            navigateToClassesFragment();
         });
 
         assignments_btn = findViewById(R.id.todolist_button);
         assignments_btn.setOnClickListener(v -> {
-            AssignmentFragment f = new AssignmentFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_main, f, "action_nav_assignmentList")
-                    .addToBackStack(null)
-                    .commit();
+            navigateToAssignmentsFragment();
         });
+
+        //Open Classes Fragment View for Default Screen
+        navigateToClassesFragment();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item){
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -78,6 +73,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void navigateToClassesFragment(){
+        ClassesFragment f = new ClassesFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main, f, "action_nav_classList")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void navigateToAssignmentsFragment(){
+        AssignmentFragment f = new AssignmentFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main, f, "action_nav_assignmentList")
+                .addToBackStack(null)
+                .commit();
     }
 
 }

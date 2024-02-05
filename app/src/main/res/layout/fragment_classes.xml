@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ClassesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClassesFragment"
+    android:paddingTop="5dp"
     android:orientation="vertical">
 
     <ScrollView
@@ -82,7 +83,8 @@
 
             <Button
                 android:id="@+id/add_class"
-                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add Class" />
         </LinearLayout>
