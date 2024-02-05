@@ -1,5 +1,9 @@
 package com.example.cs_2340_project1;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -8,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -23,6 +27,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     Button classes_btn;
+    Button assignments_btn;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -35,40 +40,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Creating onclick for the classes button to travel to classes fragment
         classes_btn = findViewById(R.id.classes_button);
-        classes_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.Maincontainer, new ClassesFragment()).commit();
-            }
+        classes_btn.setOnClickListener(v -> {
+            navigateToClassesFragment();
         });
 
 
-
-//        setSupportActionBar(binding.toolbar);
-
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        //Open Classes Fragment View for Default Screen
+        navigateToClassesFragment();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item){
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -82,10 +71,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    private void navigateToClassesFragment(){
+        ClassesFragment f = new ClassesFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.Maincontainer, f, "action_nav_classList")
+                .addToBackStack(null)
+                .commit();
     }
+
 }

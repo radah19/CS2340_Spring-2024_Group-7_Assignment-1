@@ -28,7 +28,7 @@ public class ClassesFragment extends Fragment implements Serializable {
 
     // Add button
 
-    FloatingActionButton add_btn;
+    Button add_btn;
 
     // Creating ArrayList for bundle data
     ArrayList<ClassesModel> classesBundle = new ArrayList<>();
