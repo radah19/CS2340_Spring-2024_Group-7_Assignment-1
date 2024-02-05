@@ -12,5 +12,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_class">activity_addClass</string>
     <string name="add_class">Add a class</string>
+    <string-array name="daysOfWeek">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
 
 </resources>

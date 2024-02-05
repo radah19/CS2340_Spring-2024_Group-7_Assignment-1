@@ -1,6 +1,5 @@
 package com.example.cs_2340_project1;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
-import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,14 +27,27 @@ import java.util.ArrayList;
 public class ClassesFragment extends Fragment implements Serializable {
 
     // Add button
-    Button add_btn;
+
+    FloatingActionButton add_btn;
 
     // Creating ArrayList for bundle data
     ArrayList<ClassesModel> classesBundle = new ArrayList<>();
+    ArrayList<ClassesModel> classesMon = new ArrayList<>();
+    ArrayList<ClassesModel> classesTues = new ArrayList<>();
+    ArrayList<ClassesModel> classesWed = new ArrayList<>();
+    ArrayList<ClassesModel> classesThur = new ArrayList<>();
+    ArrayList<ClassesModel> classesFri = new ArrayList<>();
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewMon;
+    private RecyclerView recyclerViewTues;
+    private RecyclerView recyclerViewWed;
+    private RecyclerView recyclerViewThurs;
+
+    private RecyclerView recyclerViewFri;
+
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -70,9 +84,22 @@ public class ClassesFragment extends Fragment implements Serializable {
         super.onCreate(savedInstanceState);
         Bundle sentBundle = getArguments();
         if (sentBundle != null) {
-
             classesBundle = (ArrayList<ClassesModel>) sentBundle.getSerializable("userClasses");
+            for (ClassesModel i: classesBundle) {
+                if (i.getRepeat().contains("Monday")) {
+                    classesMon.add(i);
+                } if (i.getRepeat().contains("Tuesday")) {
+                    classesTues.add(i);
+                } if (i.getRepeat().contains("Wednesday")) {
+                    classesWed.add(i);
+                } if (i.getRepeat().contains("Thursday")) {
+                    classesThur.add(i);
+                } if (i.getRepeat().contains("Friday")) {
+                    classesFri.add(i);
+                }// if
+            } // for
         } // if
+
         // Grabbing sent over bundle
 
         if (getArguments() != null) {
@@ -88,14 +115,41 @@ public class ClassesFragment extends Fragment implements Serializable {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_classes, container, false);
-        // For the recycler view
-        recyclerView = view.findViewById(R.id.classList);
-        recyclerView.setHasFixedSize(true);
-        mAdapter = new RecycleViewAdapter(classesBundle);
-        RecycleViewAdapter adapter = new RecycleViewAdapter(classesBundle);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+
+        // For the recycler view
+
+        recyclerViewMon = view.findViewById(R.id.monday);
+        RecycleViewAdapter adapter = new RecycleViewAdapter(classesMon, classesBundle);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewMon.setLayoutManager(mLayoutManager);
+        recyclerViewMon.setAdapter(adapter);
+
+        recyclerViewTues = view.findViewById(R.id.tuesday);
+        TuesdayAdapter adapterTues = new TuesdayAdapter(classesTues, classesBundle);
+        RecyclerView.LayoutManager tLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewTues.setLayoutManager(tLayoutManager);
+        recyclerViewTues.setAdapter(adapterTues);
+
+        recyclerViewWed = view.findViewById(R.id.wednesday);
+        WednesdayAdapter adapterWed = new WednesdayAdapter(classesWed, classesBundle);
+        RecyclerView.LayoutManager wLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewWed.setLayoutManager(wLayoutManager);
+        recyclerViewWed.setAdapter(adapterWed);
+
+
+        recyclerViewThurs = view.findViewById(R.id.thursday);
+        ThursdayAdapter adapterThurs = new ThursdayAdapter(classesThur, classesBundle);
+        RecyclerView.LayoutManager rLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewThurs.setLayoutManager(rLayoutManager);
+        recyclerViewThurs.setAdapter(adapterThurs);
+
+        recyclerViewFri = view.findViewById(R.id.friday);
+        FridayAdapter adapterFri = new FridayAdapter(classesFri, classesBundle);
+        RecyclerView.LayoutManager fLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewFri.setLayoutManager(fLayoutManager);
+        recyclerViewFri.setAdapter(adapterFri);
 
         add_btn = view.findViewById(R.id.add_class);
 
