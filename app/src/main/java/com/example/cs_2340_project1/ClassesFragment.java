@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -163,6 +164,8 @@ public class ClassesFragment extends Fragment implements Serializable {
         classModels.addAll(classesWed);
         classModels.addAll(classesThur);
         classModels.addAll(classesFri);
+
+        classModels = (ArrayList) classModels.stream().distinct().collect(Collectors.toList());
         super.onDestroy();
     }
 }

@@ -134,12 +134,12 @@ public class AddClass extends Fragment implements Serializable {
         id = recievedBundle.getInt("position", -1);
         if (id >= 0) {
           // Setting the edit field
-            courseInput.setText(classesModel.get(id).getCourseName());
-            timeInput.setText(classesModel.get(id).getDateAndtime());
-            dateInput.setText(classesModel.get(id).getRepeat());
-            professorInput.setText(classesModel.get(id).getProfessor());
-            sectionInput.setText(classesModel.get(id).getSection());
-            locationInput.setText(classesModel.get(id).getLocation());
+            courseInput.setText(classModels.get(id).getCourseName());
+            timeInput.setText(classModels.get(id).getDateAndtime());
+            dateInput.setText(classModels.get(id).getRepeat());
+            professorInput.setText(classModels.get(id).getProfessor());
+            sectionInput.setText(classModels.get(id).getSection());
+            locationInput.setText(classModels.get(id).getLocation());
         } // if
 
 
@@ -168,12 +168,12 @@ public class AddClass extends Fragment implements Serializable {
                     alertDialog.setMessage("Are you sure you want to edit this class?").setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            classesModel.get(id).setCourseName(courseInput.getText().toString());
-                            classesModel.get(id).setDateAndtime(timeInput.getText().toString());
-                            classesModel.get(id).setRepeat(dateInput.getText().toString());
-                            classesModel.get(id).setSection(sectionInput.getText().toString());
-                            classesModel.get(id).setLocation(locationInput.getText().toString());
-                            classesModel.get(id).setProfessor(professorInput.getText().toString());
+                            classModels.get(id).setCourseName(courseInput.getText().toString());
+                            classModels.get(id).setDateAndtime(timeInput.getText().toString());
+                            classModels.get(id).setRepeat(dateInput.getText().toString());
+                            classModels.get(id).setSection(sectionInput.getText().toString());
+                            classModels.get(id).setLocation(locationInput.getText().toString());
+                            classModels.get(id).setProfessor(professorInput.getText().toString());
                             // editing
                             ClassesFragment classFragment = new ClassesFragment();
                             Bundle bundle = new Bundle();
