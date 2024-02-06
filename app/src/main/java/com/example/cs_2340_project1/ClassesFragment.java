@@ -1,5 +1,7 @@
 package com.example.cs_2340_project1;
 
+import static com.example.cs_2340_project1.GlobalControllerService.classModels;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,7 +19,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,22 +87,24 @@ public class ClassesFragment extends Fragment implements Serializable {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle sentBundle = getArguments();
-        if (sentBundle != null) {
-            classesBundle = (ArrayList<ClassesModel>) sentBundle.getSerializable("userClasses");
-            for (ClassesModel i: classesBundle) {
-                if (i.getRepeat().contains("Monday")) {
-                    classesMon.add(i);
-                } if (i.getRepeat().contains("Tuesday")) {
-                    classesTues.add(i);
-                } if (i.getRepeat().contains("Wednesday")) {
-                    classesWed.add(i);
-                } if (i.getRepeat().contains("Thursday")) {
-                    classesThur.add(i);
-                } if (i.getRepeat().contains("Friday")) {
-                    classesFri.add(i);
-                }// if
-            } // for
-        } // if
+
+        for (ClassesModel i: classModels) {
+            if (i.getRepeat().contains("Monday")) {
+                classesMon.add(i);
+            }
+            if (i.getRepeat().contains("Tuesday")) {
+                classesTues.add(i);
+            }
+            if (i.getRepeat().contains("Wednesday")) {
+                classesWed.add(i);
+            }
+            if (i.getRepeat().contains("Thursday")) {
+                classesThur.add(i);
+            }
+            if (i.getRepeat().contains("Friday")) {
+                classesFri.add(i);
+            }// if
+        }
 
         // Grabbing sent over bundle
 
@@ -115,8 +121,6 @@ public class ClassesFragment extends Fragment implements Serializable {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_classes, container, false);
-
-
 
         // For the recycler view
 
@@ -153,19 +157,29 @@ public class ClassesFragment extends Fragment implements Serializable {
 
         add_btn = view.findViewById(R.id.add_class);
 
-        add_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddClass addFragment = new AddClass();
-                Bundle bundle2 =  new Bundle();
-                bundle2.putSerializable("send", classesBundle);
-                addFragment.setArguments(bundle2);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content_main, addFragment).commit();
-
-
-            }
+        add_btn.setOnClickListener(v -> {
+            AddClass addFragment = new AddClass();
+            Bundle bundle2 =  new Bundle();
+            bundle2.putSerializable("send", classesBundle);
+            addFragment.setArguments(bundle2);
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content_main, addFragment).commit();
         });
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        classModels.clear();
+
+        classModels.addAll(classesMon);
+        classModels.addAll(classesTues);
+        classModels.addAll(classesWed);
+        classModels.addAll(classesThur);
+        classModels.addAll(classesFri);
+
+        classModels = (ArrayList<ClassesModel>) (classModels.stream().distinct().collect(Collectors.toList()));
+
+        super.onDestroy();
     }
 }

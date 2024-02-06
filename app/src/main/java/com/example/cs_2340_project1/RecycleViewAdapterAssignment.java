@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,7 +78,7 @@ public class RecycleViewAdapterAssignment extends RecyclerView.Adapter<RecycleVi
         TextView time;
         TextView location;
         CheckBox isComplete;
-        ConstraintLayout parentLayout;
+        CardView parentLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

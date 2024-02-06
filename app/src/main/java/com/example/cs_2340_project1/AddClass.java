@@ -1,5 +1,7 @@
 package com.example.cs_2340_project1;
 
+import static com.example.cs_2340_project1.GlobalControllerService.classModels;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -162,12 +164,12 @@ public class AddClass extends Fragment implements Serializable {
                     alertDialog.setMessage("Are you sure you want to edit this class?").setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            classesModel.get(id).setCourseName(courseInput.getText().toString());
-                            classesModel.get(id).setDateAndtime(timeInput.getText().toString());
-                            classesModel.get(id).setRepeat(dateInput.getText().toString());
-                            classesModel.get(id).setSection(sectionInput.getText().toString());
-                            classesModel.get(id).setLocation(locationInput.getText().toString());
-                            classesModel.get(id).setProfessor(professorInput.getText().toString());
+                            classModels.get(id).setCourseName(courseInput.getText().toString());
+                            classModels.get(id).setDateAndtime(timeInput.getText().toString());
+                            classModels.get(id).setRepeat(dateInput.getText().toString());
+                            classModels.get(id).setSection(sectionInput.getText().toString());
+                            classModels.get(id).setLocation(locationInput.getText().toString());
+                            classModels.get(id).setProfessor(professorInput.getText().toString());
                             // editing
                             ClassesFragment classFragment = new ClassesFragment();
                             Bundle bundle = new Bundle();
@@ -208,6 +210,7 @@ public class AddClass extends Fragment implements Serializable {
                     section = sectionInput.getText().toString();
                     location = locationInput.getText().toString();
                     classesModel.add(new ClassesModel(location, section, professor, course, time, date));
+                    classModels.add(new ClassesModel(location, section, professor, course, time, date));
                     // Creating bundle for data transfer
                     ClassesFragment classFragment = new ClassesFragment();
                     Bundle bundle = new Bundle();
@@ -226,7 +229,7 @@ public class AddClass extends Fragment implements Serializable {
                 alertDialog.setMessage("Are you sure you want to delete this class?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        classesModel.remove(id);
+                        classModels.remove(id);
                         ClassesFragment classFragment = new ClassesFragment();
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("userClasses", classesModel);

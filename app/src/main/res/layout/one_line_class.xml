@@ -45,7 +45,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cl_class"
-                app:layout_constraintVertical_bias="0.186" />
+                app:layout_constraintVertical_bias="0.186"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/cl_professor"
@@ -56,7 +57,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.019"
-                app:layout_constraintStart_toEndOf="@+id/professor" />
+                app:layout_constraintStart_toEndOf="@+id/professor"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/location"
@@ -66,7 +68,8 @@
                 android:layout_marginBottom="16dp"
                 android:text="Location:"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/cl_location"
@@ -77,7 +80,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.026"
-                app:layout_constraintStart_toEndOf="@+id/location" />
+                app:layout_constraintStart_toEndOf="@+id/location"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/section"
@@ -88,7 +92,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.616"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/cl_section"
@@ -99,7 +104,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.094"
                 app:layout_constraintStart_toEndOf="@+id/section"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/time"
@@ -111,7 +117,8 @@
                 app:layout_constraintHorizontal_bias="0.563"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.867" />
+                app:layout_constraintVertical_bias="0.867"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/cl_date"
@@ -122,7 +129,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.119"
-                app:layout_constraintStart_toEndOf="@+id/time" />
+                app:layout_constraintStart_toEndOf="@+id/time"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/re"
@@ -134,7 +142,8 @@
                 app:layout_constraintHorizontal_bias="0.57"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.603" />
+                app:layout_constraintVertical_bias="0.603"
+                android:scrollHorizontally="false"/>
 
             <TextView
                 android:id="@+id/cl_repeat"
@@ -145,7 +154,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.086"
                 app:layout_constraintStart_toEndOf="@+id/re"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:scrollHorizontally="false"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
