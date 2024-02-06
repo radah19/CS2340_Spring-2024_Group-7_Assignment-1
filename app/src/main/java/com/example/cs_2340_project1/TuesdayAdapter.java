@@ -55,7 +55,6 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
                 bundle2.putSerializable("send", classesBundle);
                 bundle2.putSerializable("position", holder.getAbsoluteAdapterPosition());
                 bundle2.putSerializable("day", classesDay);
-                Toast.makeText(v.getContext(), String.valueOf(holder.getAbsoluteAdapterPosition()), Toast.LENGTH_SHORT).show();
                 addClass.setArguments(bundle2);
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_main, addClass).commit();

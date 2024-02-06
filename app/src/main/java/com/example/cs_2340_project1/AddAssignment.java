@@ -108,7 +108,6 @@ public class AddAssignment extends Fragment implements Serializable {
         id = recievedBundle.getInt("position", -1);
         if (recievedBundle != null) {
             assignmentModel = (ArrayList<AssignmentModel>) recievedBundle.getSerializable("send");
-            Toast.makeText(getActivity(), String.valueOf(assignmentModel.size()), Toast.LENGTH_SHORT).show();
         }
         // whether edit or blank form
 
@@ -139,11 +138,14 @@ public class AddAssignment extends Fragment implements Serializable {
         id = recievedBundle.getInt("position", -1);
         if (id >= 0) {
             // Setting the edit field
+            del_btn.setVisibility(view.VISIBLE);
             courseInput.setText(assignmentModels.get(id).getCourseName());
             timeInput.setText(assignmentModels.get(id).getTime().toString());
             dateInput.setText(assignmentModels.get(id).getDate().toString());
             titleInput.setText(assignmentModels.get(id).getTitle());
             locationInput.setText(assignmentModels.get(id).getLocation());
+        } else {
+            del_btn.setVisibility(view.INVISIBLE);
         } // if
 
 
