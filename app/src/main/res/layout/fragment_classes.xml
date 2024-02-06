@@ -26,8 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Monday"
-                android:textStyle="bold"
-                android:textSize="18dp" />
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/monday"
                 android:layout_width="match_parent"
@@ -38,8 +39,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tuesday"
-                android:textStyle="bold"
-                android:textSize="18dp" />
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tuesday"
                 android:layout_width="match_parent"
@@ -50,8 +52,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Wednesday"
-                android:textStyle="bold"
-                android:textSize="18dp" />
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/wednesday"
                 android:layout_width="match_parent"
@@ -62,8 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Thursday"
-                android:textStyle="bold"
-                android:textSize="18dp" />
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/thursday"
                 android:layout_width="match_parent"
@@ -74,8 +78,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Friday"
-                android:textStyle="bold"
-                android:textSize="18dp" />
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/friday"
                 android:layout_width="match_parent"
