@@ -56,7 +56,7 @@ public class RecycleViewAdapterAssignment extends RecyclerView.Adapter<RecycleVi
             AddAssignment addAssignment = new AddAssignment();
 
             Bundle bundle2 = new Bundle();
-            bundle2.putSerializable("send", assignmentBundle);
+            bundle2.putSerializable("send", assignmentDay);
             bundle2.putSerializable("position", holder.getAbsoluteAdapterPosition());
             addAssignment.setArguments(bundle2);
             AppCompatActivity activity = (AppCompatActivity) v.getContext();

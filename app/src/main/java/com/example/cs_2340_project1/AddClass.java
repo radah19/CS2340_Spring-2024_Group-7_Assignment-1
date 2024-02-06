@@ -127,6 +127,7 @@ public class AddClass extends Fragment implements Serializable {
         Bundle recievedBundle = getArguments();
         id = recievedBundle.getInt("position", -1);
         if (id >= 0) {
+            del_btn.setVisibility(view.VISIBLE);
             // Setting the edit field
             courseInput.setText(classesDays.get(id).getCourseName());
             timeInput.setText(classesDays.get(id).getDateAndtime());
@@ -134,7 +135,10 @@ public class AddClass extends Fragment implements Serializable {
             professorInput.setText(classesDays.get(id).getProfessor());
             sectionInput.setText(classesDays.get(id).getSection());
             locationInput.setText(classesDays.get(id).getLocation());
+        } else {
+            del_btn.setVisibility(view.INVISIBLE);
         } // if
+
 
 
         cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -162,12 +166,12 @@ public class AddClass extends Fragment implements Serializable {
                     alertDialog.setMessage("Are you sure you want to edit this class?").setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            classesModel.get(id).setCourseName(courseInput.getText().toString());
-                            classesModel.get(id).setDateAndtime(timeInput.getText().toString());
-                            classesModel.get(id).setRepeat(dateInput.getText().toString());
-                            classesModel.get(id).setSection(sectionInput.getText().toString());
-                            classesModel.get(id).setLocation(locationInput.getText().toString());
-                            classesModel.get(id).setProfessor(professorInput.getText().toString());
+                            classesDays.get(id).setCourseName(courseInput.getText().toString());
+                            classesDays.get(id).setDateAndtime(timeInput.getText().toString());
+                            classesDays.get(id).setRepeat(dateInput.getText().toString());
+                            classesDays.get(id).setSection(sectionInput.getText().toString());
+                            classesDays.get(id).setLocation(locationInput.getText().toString());
+                            classesDays.get(id).setProfessor(professorInput.getText().toString());
                             // editing
                             ClassesFragment classFragment = new ClassesFragment();
                             Bundle bundle = new Bundle();
@@ -305,6 +309,17 @@ public class AddClass extends Fragment implements Serializable {
                     } // if
                 } // for
                 dateInput.setText(item);
+            }
+        });
+
+        mBuilder.setNeutralButton("Clear", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for (int i = 0; i < checkedItems.length; i++) {
+                    checkedItems[i] = false;
+                    mUserItems.clear();
+                    dateInput.setText("");
+                } // for
             }
         });
         mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {

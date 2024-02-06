@@ -72,7 +72,8 @@
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:onClick="addClass"
-            android:text="OK" />
+            android:text="OK"
+            />
 
         <Button
             android:id="@+id/cancel_btn"
@@ -94,5 +95,6 @@
             android:inputType="date" />
 
     </LinearLayout>
+
 
 </RelativeLayout>
