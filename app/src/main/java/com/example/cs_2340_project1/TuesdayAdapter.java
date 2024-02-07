@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +76,7 @@ public class TuesdayAdapter extends RecyclerView.Adapter<TuesdayAdapter.MyViewHo
         TextView date;
         TextView repeat;
         TextView location;
-        ConstraintLayout parentLayout;
+        LinearLayout parentLayout;
         Button edit_btn;
 
         public MyViewHolderTues(@NonNull View itemView) {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -77,7 +78,7 @@ public class ThursdayAdapter extends RecyclerView.Adapter<ThursdayAdapter.MyView
         TextView date;
         TextView repeat;
         TextView location;
-        ConstraintLayout parentLayout;
+        LinearLayout parentLayout;
         Button edit_btn;
 
         public MyViewHolderThur(@NonNull View itemView) {
