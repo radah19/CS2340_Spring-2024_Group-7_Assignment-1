@@ -48,7 +48,23 @@ public class RecycleViewAdapterAssignment extends RecyclerView.Adapter<RecycleVi
         holder.date.setText(assignmentDay.get(position).getDate().toString());
         holder.location.setText(assignmentDay.get(position).getLocation());
 
-        holder.isComplete.setChecked(assignmentDay.get(position).isComplete);
+        switch(assignmentDay.get(position).getItemType()) {
+            case 0:
+                holder.itemType.setVisibility(View.GONE);
+                holder.location.setVisibility(View.INVISIBLE);
+                holder.className.setVisibility(View.GONE);
+                break;
+
+            case 1:
+                holder.itemType.setText("Assignment");
+                break;
+
+            case 2:
+                holder.itemType.setText("Exam");
+                break;
+        }
+
+        holder.isComplete.setChecked(assignmentDay.get(position).isComplete());
         holder.isComplete.setOnClickListener(v -> {
             assignmentDay.get(position).setComplete(!assignmentDay.get(position).isComplete());
             updateAssignmentList();
@@ -77,6 +93,7 @@ public class RecycleViewAdapterAssignment extends RecyclerView.Adapter<RecycleVi
         TextView date;
         TextView time;
         TextView location;
+        TextView itemType;
         CheckBox isComplete;
         CardView parentLayout;
 
@@ -87,6 +104,7 @@ public class RecycleViewAdapterAssignment extends RecyclerView.Adapter<RecycleVi
             date = itemView.findViewById(R.id.cl_date);
             time = itemView.findViewById(R.id.cl_time);
             location = itemView.findViewById(R.id.cl_location);
+            itemType = itemView.findViewById(R.id.cl_tag);
             isComplete = itemView.findViewById(R.id.isCompleteCheckbox);
             parentLayout = itemView.findViewById(R.id.one_line_assignment);
         }

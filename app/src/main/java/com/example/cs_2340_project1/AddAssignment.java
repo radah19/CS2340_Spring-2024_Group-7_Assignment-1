@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -42,66 +44,25 @@ public class AddAssignment extends Fragment implements Serializable {
     Button cancel_btn;
     Button del_btn;
 
-    String[] days;
-    boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
     // Variables
     String course, date, title, location, time;
-    boolean isComplete;
+    String[] days;
+    boolean[] checkedItems;
+
     // Different EditTexts
-    EditText courseInput;
-    EditText dateInput;
-    EditText titleInput;
-    EditText timeInput;
-    EditText locationInput;
-    CheckBox isCompleteInput;
+    EditText courseInput, dateInput, titleInput, timeInput, locationInput;
+    RadioButton radioItem, radioExam, radioAssignment;
+    RadioGroup radioGroup;
 
 
     int id, hour, minute, year, month, day;
     // Creating ArrayList for data
     ArrayList<AssignmentModel> assignmentModel = new ArrayList<>();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AddAssignment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddAssignment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddAssignment newInstance(String param1, String param2) {
-        AddAssignment fragment = new AddAssignment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TESTING!!!!
-        /*
-        Bundle recievedBundle2 = getArguments();
-        if (recievedBundle2 != null) {
-           Toast.makeText(getActivity(), String.valueOf(recievedBundle2.getSerializable("position")), Toast.LENGTH_SHORT).show();
-        }
-         */
+
         days = getResources().getStringArray(R.array.daysOfWeek);
         checkedItems =  new boolean[days.length];
         Bundle recievedBundle = getArguments();
@@ -109,31 +70,30 @@ public class AddAssignment extends Fragment implements Serializable {
         if (recievedBundle != null) {
             assignmentModel = (ArrayList<AssignmentModel>) recievedBundle.getSerializable("send");
         }
-        // whether edit or blank form
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_add_assignment, container, false);
-        // Different EditTexts
+
         submit_btn = view.findViewById(R.id.submit_btn);
         cancel_btn = view.findViewById(R.id.cancel_btn);
         del_btn = view.findViewById(R.id.del_btn);
-        // Assigning
-        courseInput = (EditText) view.findViewById(R.id.assignment_name);
-        dateInput = (EditText) view.findViewById(R.id.assignment_date);
-        timeInput =  (EditText) view.findViewById(R.id.assignment_time);
-        titleInput = (EditText) view.findViewById(R.id.assignment_title);
-        locationInput = (EditText) view.findViewById(R.id.assignment_location);
-        // Setting the edit field
-        // Onclick for cancel button
+
+        courseInput = view.findViewById(R.id.assignment_name);
+        dateInput = view.findViewById(R.id.assignment_date);
+        timeInput = view.findViewById(R.id.assignment_time);
+        titleInput = view.findViewById(R.id.assignment_title);
+        locationInput = view.findViewById(R.id.assignment_location);
+
+        radioGroup = view.findViewById(R.id.itemTypeRadioGroup);
+        radioItem = view.findViewById(R.id.radio_listitem);
+        radioExam = view.findViewById(R.id.radio_exam);
+        radioAssignment = view.findViewById(R.id.radio_assignment);
+
         Bundle recievedBundle = getArguments();
         id = recievedBundle.getInt("position", -1);
         if (id >= 0) {
@@ -144,22 +104,25 @@ public class AddAssignment extends Fragment implements Serializable {
             dateInput.setText(assignmentModels.get(id).getDate().toString());
             titleInput.setText(assignmentModels.get(id).getTitle());
             locationInput.setText(assignmentModels.get(id).getLocation());
-        } else {
-            del_btn.setVisibility(view.INVISIBLE);
-        } // if
 
+            radioItem.setChecked(assignmentModels.get(id).getItemType() == 0);
+            radioAssignment.setChecked(assignmentModels.get(id).getItemType() == 1);
+            radioExam.setChecked(assignmentModels.get(id).getItemType() == 2);
+
+            boolean itemTypeSelectedIsListItem = assignmentModels.get(id).getItemType() == 0;
+            locationInput.setVisibility( (itemTypeSelectedIsListItem) ? View.GONE : View.VISIBLE );
+            courseInput.setVisibility( (itemTypeSelectedIsListItem) ? View.GONE : View.VISIBLE );
+
+        } else {
+            del_btn.setVisibility(view.GONE);
+        }
 
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //cancelButtonPressed();
-
                 AssignmentFragment assignmentFragment = new AssignmentFragment();
-                Bundle bundle =  new Bundle();
-                bundle.putSerializable("userAssignments", assignmentModel);
-                assignmentFragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
             }
         });
@@ -168,26 +131,28 @@ public class AddAssignment extends Fragment implements Serializable {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (id >= 0) {
-                    // Alert to confirm delete
+                if (id >= 0) { // Edit Form
+
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                     alertDialog.setMessage("Are you sure you want to edit this assignment?").setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            //Update Element in List
                             assignmentModels.get(id).setCourseName(courseInput.getText().toString());
                             assignmentModels.get(id).setDate(
                                     LocalDate.parse(dateInput.getText().toString(),
-                                    DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                             );
                             assignmentModels.get(id).setTime(LocalTime.parse(timeInput.getText().toString()));
                             assignmentModels.get(id).setTitle(titleInput.getText().toString());
                             assignmentModels.get(id).setLocation(locationInput.getText().toString());
-                            // editing
+                            assignmentModels.get(id).setItemType(getItemTypeSelected());
+
                             AssignmentFragment assignmentFragment = new AssignmentFragment();
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("userAssignment", assignmentModel);
                             assignmentFragment.setArguments(bundle);
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
                         }
                     }) .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -198,86 +163,86 @@ public class AddAssignment extends Fragment implements Serializable {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("userAssignment", assignmentModel);
                             assignmentFragment.setArguments(bundle);
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
                         }
                     });
                     AlertDialog mDialog = alertDialog.create();
                     mDialog.show();
 
-                } else {
-                    // blank form
-                    // storeAssignmentInformation(view);
-                    courseInput = (EditText) getActivity().findViewById(R.id.assignment_name);
-                    dateInput = (EditText) getActivity().findViewById(R.id.assignment_date);
-                    timeInput = (EditText) getActivity().findViewById(R.id.assignment_time);
-                    titleInput = (EditText) getActivity().findViewById(R.id.assignment_title);
-                    locationInput = (EditText) getActivity().findViewById(R.id.assignment_location);
-                    // Assigning variables
+                } else { //New Assignment Form
+                    dateInput = getActivity().findViewById(R.id.assignment_date);
+                    timeInput = getActivity().findViewById(R.id.assignment_time);
+                    titleInput = getActivity().findViewById(R.id.assignment_title);
+                    courseInput = getActivity().findViewById(R.id.assignment_name);
+                    locationInput = getActivity().findViewById(R.id.assignment_location);
+
                     course = courseInput.getText().toString();
                     date = dateInput.getText().toString();
                     time = timeInput.getText().toString();
                     title = titleInput.getText().toString();
                     location = locationInput.getText().toString();
 
-                    DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-                    assignmentModels.add(new AssignmentModel(location, title, course, LocalDate.from(df.parse(date)), LocalTime.parse(time), false));
+                    assignmentModels.add(new AssignmentModel(
+                            title,
+                            LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                            LocalTime.parse(time),
+                            getItemTypeSelected(),
+                            location,
+                            course,
+                            false));
+
                     // Creating bundle for data transfer
                     AssignmentFragment assignmentFragment = new AssignmentFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("userAssignment", assignmentModel);
                     assignmentFragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
-                } // else
+                }
             }
         });
-        del_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                // Alert to confirm delete
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                alertDialog.setMessage("Are you sure you want to delete this assignment?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        assignmentModels.remove(id);
-                        AssignmentFragment assignmentFragment = new AssignmentFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("userAssignment", assignmentModel);
-                        assignmentFragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
-                    }
-                }) .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AssignmentFragment assignmentFragment = new AssignmentFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("userAssignment", assignmentModel);
-                        assignmentFragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
-                    }
-                });
-                AlertDialog mDialog = alertDialog.create();
-                mDialog.show();
-            }
+
+
+        del_btn.setOnClickListener(v -> {
+            // Alert to confirm delete
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            alertDialog.setMessage("Are you sure you want to delete this assignment?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    assignmentModels.remove(id);
+                    AssignmentFragment assignmentFragment = new AssignmentFragment();
+
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content_main, assignmentFragment).commit();
+                }
+            }) .setNegativeButton("Cancel", (dialog, which) -> {
+                dialog.dismiss();
+            });
+            AlertDialog mDialog = alertDialog.create();
+            mDialog.show();
         });
 
         timeInput = view.findViewById(R.id.assignment_time);
-        timeInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popTimePicker(view);
-            }
-        });
+        timeInput.setOnClickListener(v -> popTimePicker(view));
 
         dateInput = view.findViewById(R.id.assignment_date);
-        dateInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePicker(view);
-            }
+        dateInput.setOnClickListener(v -> datePicker(view));
+
+        radioItem = view.findViewById(R.id.radio_listitem);
+        radioItem.setOnClickListener(v -> {
+            locationInput.setVisibility(View.GONE);
+            courseInput.setVisibility(View.GONE);
+        });
+        radioAssignment = view.findViewById(R.id.radio_assignment);
+        radioAssignment.setOnClickListener(v -> {
+            locationInput.setVisibility(View.VISIBLE);
+            courseInput.setVisibility(View.VISIBLE);
+        });
+        radioExam = view.findViewById(R.id.radio_exam);
+        radioExam.setOnClickListener(v -> {
+            locationInput.setVisibility(View.VISIBLE);
+            courseInput.setVisibility(View.VISIBLE);
         });
         return view;
     }
@@ -310,6 +275,19 @@ public class AddAssignment extends Fragment implements Serializable {
         timePickerDialog.show();
     }// datePicker
 
+    public int getItemTypeSelected() {
+        switch(radioGroup.getCheckedRadioButtonId()){
+            case R.id.radio_listitem:
+                return 0;
 
+            case R.id.radio_assignment:
+                return 1;
+
+            case R.id.radio_exam:
+                return 2;
+        }
+
+        return -1;
+    }
 
 }

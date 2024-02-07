@@ -10,6 +10,8 @@ public class GlobalControllerService extends Service {
     public static ArrayList<ClassesModel> classModels = new ArrayList<>();
     public static ArrayList<AssignmentModel> assignmentModels = new ArrayList<>();
 
+    public static int timeBeforeNotification = 0;
+
     public GlobalControllerService() {
     }
 
